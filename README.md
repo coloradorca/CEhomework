@@ -37,3 +37,15 @@ ___
 ___
 
 4. Build a Formula - Use Case: when the formula is triggered (manually triggered formula) the user should receive a message stating the mean temperature over the previous 2 weeks (use the element you built in #3 above). The message can be an email or text message. You decide! Most messaging services have free developer options. Optional:​ Instead of messaging the mean temperature POST a CSV file to a documents hub element with the data.
+
+
+In this repo there is the formula.json file.  In this formula, there are currently 7 steps.
+1. (trigger) the event that triggers the formula (it is currently manually triggerd).
+2. (buildHeader) A JS script step which builds the header for next step (HTTP Request to GET weather data from the NCDC's RESTful API).
+3.  (getWeatherData) HTTP GET request as previously mentioned, including the header data created in step two (${steps.buildHeader}).
+4.  (formatData) The result from the HTTP Request is formated in a JS Script which takes the GET request's response, and calculates the mean temperature over a two week period, returning that number to the successive step.
+5. (buildBody) This fifth step is another JS Script step which takes the mean temperature, and drafts the body of the email.
+6. (SGHeaders) JS Script Step to create the headers for the SendGrid POST call.
+7.  (sendGridEmail) A HTTP POST request to the SendGrid RESTful Endpoint, include the body and headers created in steps 5 & 6.
+
+I'm sure it is possible to combine some of the logic and variables into less steps, but it is clear to me how everything flows with the steps in this order.
